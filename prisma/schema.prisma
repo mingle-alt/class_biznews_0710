@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Source {
+  id            String     @id @default(cuid())
+  name          String
+  slug          String     @unique
+  category      String
+  feedUrl       String
+  badgeColor    String
+  isActive      Boolean    @default(true)
+  lastFetchedAt DateTime?
+  articles      Article[]
+  fetchLogs     FetchLog[]
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  link        String   @unique
+  summary     String?
+  publishedAt DateTime
+  fetchedAt   DateTime @default(now())
+  sourceId    String
+  source      Source   @relation(fields: [sourceId], references: [id])
+
+  @@index([publishedAt])
+  @@index([sourceId, publishedAt])
+}
+
+model FetchLog {
+  id        String   @id @default(cuid())
+  sourceId  String
+  source    Source   @relation(fields: [sourceId], references: [id])
+  status    String
+  message   String?
+  itemCount Int?
+  ranAt     DateTime @default(now())
+
+  @@index([sourceId, ranAt])
+}
