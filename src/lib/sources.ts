@@ -11,14 +11,6 @@ export interface SourceMeta {
 
 export const SOURCES: SourceMeta[] = [
   {
-    slug: "hankyung",
-    name: "한국경제",
-    shortName: "한경",
-    category: "domestic",
-    feedUrl: "https://www.hankyung.com/feed/economy",
-    badgeColor: "blue",
-  },
-  {
     slug: "moef",
     name: "기획재정부",
     shortName: "기재부",
@@ -49,14 +41,6 @@ export const SOURCES: SourceMeta[] = [
     category: "global",
     feedUrl: "https://www.economist.com/finance-and-economics/rss.xml",
     badgeColor: "teal",
-  },
-  {
-    slug: "imf",
-    name: "IMF",
-    shortName: "IMF",
-    category: "global",
-    feedUrl: "https://www.imf.org/en/news/rss",
-    badgeColor: "orange",
   },
 ];
 

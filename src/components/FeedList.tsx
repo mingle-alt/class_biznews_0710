@@ -24,7 +24,7 @@ export default function FeedList({ articles }: { articles: FeedArticle[] }) {
   }
 
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
       {articles.map((article) => (
         <ArticleCard
           key={article.id}

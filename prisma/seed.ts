@@ -11,6 +11,7 @@ async function main() {
         category: source.category,
         feedUrl: source.feedUrl,
         badgeColor: source.badgeColor,
+        isActive: true,
       },
       create: {
         slug: source.slug,
@@ -21,7 +22,13 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded ${SOURCES.length} sources.`);
+
+  const { count } = await prisma.source.updateMany({
+    where: { slug: { notIn: SOURCES.map((s) => s.slug) }, isActive: true },
+    data: { isActive: false },
+  });
+
+  console.log(`Seeded ${SOURCES.length} sources. Deactivated ${count} removed source(s).`);
 }
 
 main()

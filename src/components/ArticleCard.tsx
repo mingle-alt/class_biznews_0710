@@ -24,19 +24,19 @@ export default function ArticleCard({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="block border-b border-neutral-200 px-4 py-4 transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900/50"
+      className="flex h-full flex-col rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
     >
-      <div className="mb-1.5 flex items-center gap-2">
+      <div className="mb-2 flex items-center gap-2">
         <SourceBadge label={sourceShortName} color={badgeColor} />
         <time className="font-mono text-[11px] text-neutral-400 dark:text-neutral-500">
           {formatRelativeTime(publishedAt)}
         </time>
       </div>
-      <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug text-neutral-900 dark:text-neutral-100">
+      <h3 className="line-clamp-3 text-[15px] font-semibold leading-snug text-neutral-900 dark:text-neutral-100">
         {title}
       </h3>
       {summary && (
-        <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
           {summary}
         </p>
       )}
