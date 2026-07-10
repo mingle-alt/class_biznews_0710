@@ -5,7 +5,7 @@ Railway 프로젝트에서 **New → Database → PostgreSQL** 추가. `DATABASE
 
 ## 2. `web` 서비스
 - **New → GitHub Repo**로 이 레포 연결
-- 기본 config-as-code 경로(`railway.json`)를 그대로 사용 — Nixpacks가 `npm run build`(prisma generate + migrate deploy + next build) 후 `npm run start` 실행
+- 기본 config-as-code 경로(`railway.json`)를 그대로 사용 — Nixpacks가 `npm run build`(prisma generate + next build) 후 `npm run start`(prisma migrate deploy + next start) 실행. 마이그레이션은 빌드가 아닌 시작 시점에 돌아야 한다 — 빌드 컨테이너에서는 Railway 프라이빗 네트워크(`postgres.railway.internal`)에 접근할 수 없기 때문
 - Settings → Variables에서 `DATABASE_URL`을 Postgres 서비스 변수로 참조(`${{Postgres.DATABASE_URL}}`)
 - Healthcheck Path는 `railway.json`에 이미 `/api/health`로 설정됨
 
