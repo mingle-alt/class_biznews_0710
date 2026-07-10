@@ -1,6 +1,7 @@
 import "dotenv/config";
 import Parser from "rss-parser";
 import { prisma } from "@/lib/db";
+import { translateToKorean } from "@/lib/translate";
 
 const USER_AGENT =
   process.env.FEED_USER_AGENT ??
@@ -27,6 +28,7 @@ async function fetchSource(source: {
   id: string;
   slug: string;
   name: string;
+  category: string;
   feedUrl: string;
 }) {
   try {
@@ -35,19 +37,29 @@ async function fetchSource(source: {
     for (const item of feed.items) {
       if (!item.link || !item.title) continue;
 
+      const existing = await prisma.article.findUnique({ where: { link: item.link } });
+      if (existing) continue;
+
       const publishedAt = item.isoDate
         ? new Date(item.isoDate)
         : item.pubDate
           ? new Date(item.pubDate)
           : new Date();
 
-      await prisma.article.upsert({
-        where: { link: item.link },
-        update: {},
-        create: {
-          title: item.title,
+      let title = item.title;
+      let summary = toSummary(item.contentSnippet ?? item.summary ?? item.content);
+
+      if (source.category === "global") {
+        const translated = await translateToKorean(title, summary);
+        title = translated.title;
+        summary = translated.summary;
+      }
+
+      await prisma.article.create({
+        data: {
+          title,
           link: item.link,
-          summary: toSummary(item.contentSnippet ?? item.summary ?? item.content),
+          summary,
           publishedAt,
           sourceId: source.id,
         },
